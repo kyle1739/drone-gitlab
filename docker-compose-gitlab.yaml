@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  server:
+    image: 'gitlab/gitlab-ce:12.3.1-ce.0'
+    container_name: gitlab-server
+    restart: always
+#    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        gitlab_pages['inplace_chroot'] = true
+    ports:
+      - '80:80'
+      - '443:443'
+    ulimits:
+      nofile:
+        soft: "65536"
+        hard: "65536"
+    volumes:
+      - './gitlab-server/config:/etc/gitlab'
+      - './gitlab-server/logs:/var/log/gitlab'
+      - './gitlab-server/data:/var/opt/gitlab'
+networks:
+  default:
+    name: gitlab-ce
